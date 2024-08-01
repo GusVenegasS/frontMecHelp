@@ -1,0 +1,25 @@
+/* src/components/Navbar.css */
+.navbar-custom {
+    background-color: #343a40; /* Cambia el color de fondo aquí */
+    padding: 0 20px; /* Espacio horizontal alrededor del contenido del Navbar */
+  }
+  
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; /* Espacio entre la imagen y el borde derecho del Navbar */
+  }
+  
+  .navbar-brand img {
+    margin-left: 40px; /* Espacio entre la imagen y el contenido siguiente */
+  }
+  
+  .navbar-nav {
+    margin-left: auto; /* Empuja el contenido a la derecha */
+    margin-right: 20px; /* Espacio entre las opciones de navegación y el borde derecho del Navbar */
+  }
+  
+  .nav-link {
+    color: white !important; /* Cambia el color de las letras a blanco */
+  }
+  
