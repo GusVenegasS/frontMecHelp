@@ -7,6 +7,7 @@ import Login from './views/Login/index.js';
 import Register from './views/registroUsuarios/index.js';
 import ViewCars from './views/verAutos/index.js';
 import RegisterCar from './views/registroAuto/index.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
