@@ -7,6 +7,7 @@ import Login from './views/Login/index.js';
 import Register from './views/registroUsuarios/index.js';
 import ViewCars from './views/verAutos/index.js';
 import RegisterCar from './views/registroAuto/index.js';
+import Footer from './views/Footer/index.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
@@ -17,18 +18,23 @@ const App = () => {
 
   return (
     <Router>
-      <NavbarComponent isAuthenticated={isAuthenticated} onLogout={handleLogout} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
-        <Route path="/register" element={<Register />} />
-        {isAuthenticated && (
-          <>
-            <Route path="/view-cars" element={<ViewCars />} />
-            <Route path="/register-car" element={<RegisterCar />} />
-          </>
-        )}
-      </Routes>
+      <div className="d-flex flex-column min-vh-100">
+        <NavbarComponent isAuthenticated={isAuthenticated} onLogout={handleLogout} />
+        <div className="flex-fill">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login onLogin={handleLogin} />} />
+            <Route path="/register" element={<Register />} />
+            {isAuthenticated && (
+              <>
+                <Route path="/view-cars" element={<ViewCars />} />
+                <Route path="/register-car" element={<RegisterCar />} />
+              </>
+            )}
+          </Routes>
+        </div>
+        <Footer />
+      </div>
     </Router>
   );
 };
