@@ -11,7 +11,7 @@ import Footer from './views/Footer/index.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const [datosUsuario, setDatosUsuario] = useState(null);
 

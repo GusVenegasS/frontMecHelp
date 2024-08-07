@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Button, Card, InputGroup } from 'react-bootstrap';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import API from "../../services/api-service"
+import Auth from "../../services/auth-service"
 
 const Login = ({ onLogin }) => {
   const [usuario, setUsuario] = useState('');
@@ -18,14 +19,26 @@ const Login = ({ onLogin }) => {
       username: usuario,
       password: password
     }
-    API.autenticacion(body).then((result) => {
-      if (result.token != null) {
-        onLogin(result.token)
-        API.readUsuarioToken(result.token).then((result) => {
-          navigate('/view-cars');
-        })
+
+    API.getTokenAPIs("admin", "secret").then((result) => {
+      if (result.access_token === undefined) {
+        console.log("hubo algún error")
+      } else {
+        console.log(result)
+        Auth.saveJWT(result.access_token)
+        if (Auth.getJWT() != null) {
+          API.autenticacion(body).then((result) => {
+            if (result.token != null) {
+              onLogin(result.token)
+              API.readUsuarioToken(result.token).then((result) => {
+                navigate('/view-cars');
+              })
+            }
+          })
+        }
       }
-    })
+    }
+    )
   };
 
   return (
