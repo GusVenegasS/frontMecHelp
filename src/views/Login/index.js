@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Card, InputGroup } from 'react-bootstrap';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import API from "../../services/api-service"
 
 const Login = ({ onLogin }) => {
   const [usuario, setUsuario] = useState('');
@@ -13,11 +14,22 @@ const Login = ({ onLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted");
-    // Add your login logic here
+    let body = {
+      username: usuario,
+      password: password
+    }
+    API.autenticacion(body).then((result) => {
+      if (result.token != null) {
+        onLogin(result.token)
+        API.readUsuarioToken(result.token).then((result) => {
+          navigate('/view-cars');
+        })
+      }
+    })
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center" style={{ marginTop: '50px'}}>
+    <div className="d-flex justify-content-center align-items-center" style={{ marginTop: '50px' }}>
       <Card style={{ width: '100%', maxWidth: '400px' }} className="p-4 rounded shadow">
         <Card.Body>
           <h2 className="text-center mb-4">Ingreso al sistema</h2>

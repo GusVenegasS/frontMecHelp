@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Container } from 'react-bootstrap';
-import axios from 'axios';
+import API from "../../services/api-service"
+import Swal from 'sweetalert2';
 
 const RegistrarVehiculo = () => {
   const [formData, setFormData] = useState({
@@ -27,16 +28,14 @@ const RegistrarVehiculo = () => {
       setMensajeError('Placa Incorrecta, ingreselo de la forma XXX-123/XXX-1234');
     } else {
       setMensajeError('');
-
-      // Aquí puedes hacer la solicitud POST con axios
-      try {
-        const response = await axios.post('/url/registrarAuto', formData);
-        console.log(response.data);
-        // Manejar respuesta
-      } catch (error) {
-        console.error(error);
-        // Manejar error
-      }
+      API.crearAuto(formData).then((result) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Auto creado',
+          text: 'El auto ha sido creado exitosamente.',
+        });
+      })
+      
     }
   };
 

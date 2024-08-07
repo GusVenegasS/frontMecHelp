@@ -13,8 +13,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
 
-  const handleLogin = () => setIsAuthenticated(true);
-  const handleLogout = () => setIsAuthenticated(false);
+  const [datosUsuario, setDatosUsuario] = useState(null);
+
+  const handleLogin = (data) => {
+    setIsAuthenticated(true);
+    setDatosUsuario(data);
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setDatosUsuario(null);
+  };
 
   return (
     <Router>
@@ -27,8 +36,8 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             {isAuthenticated && (
               <>
-                <Route path="/view-cars" element={<ViewCars />} />
-                <Route path="/register-car" element={<RegisterCar />} />
+                <Route path="/view-cars" element={<ViewCars datosUsuario={datosUsuario}/>} />
+                <Route path="/register-car" element={<RegisterCar datosUsuario={datosUsuario}/>} />
               </>
             )}
           </Routes>

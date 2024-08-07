@@ -4,23 +4,22 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import API from "../../services/api-service"
 
-const ViewCars = () => {
+
+const ViewCars = ({ datosUsuario }) => {
   const [autos, setAutos] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Simulación de la obtención de datos, reemplaza con tu solicitud HTTP real
-    const fetchAutos = async () => {
-      try {
-        const response = await axios.get('/url/to/fetch/autos'); // Reemplaza con tu URL
-        setAutos(response.data);
-      } catch (error) {
-        console.error("Hubo un error al obtener los autos:", error);
-      }
-    };
-    fetchAutos();
-  }, []);
+    if (datosUsuario) {
+      API.verAutos(datosUsuario.usuario_id).then((result) => {
+        setAutos(result);
+      }).catch((error) => {
+        console.error('Error al obtener los autos:', error);
+      });
+    }
+  }, [datosUsuario]);
 
   const confirmDeletion = (vehiculoId) => {
     Swal.fire({
@@ -33,18 +32,15 @@ const ViewCars = () => {
       confirmButtonText: 'Sí, eliminar'
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteAuto(vehiculoId);
+        API.eliminarAuto(vehiculoId).then((result) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Auto eliminado',
+            text: 'El auto ha sido eliminado exitosamente.',
+          });
+        })
       }
     });
-  };
-
-  const deleteAuto = async (vehiculoId) => {
-    try {
-      await axios.delete(`/url/to/delete/auto/${vehiculoId}`); // Reemplaza con tu URL
-      setAutos(autos.filter(auto => auto.id !== vehiculoId));
-    } catch (error) {
-      console.error("Hubo un error al eliminar el auto:", error);
-    }
   };
 
   const redirectToServicio = (placa) => {

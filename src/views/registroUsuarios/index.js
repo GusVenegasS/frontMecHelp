@@ -2,15 +2,11 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import API from "../../services/api-service"
+import Auth from "../../services/auth-service"
+import Swal from 'sweetalert2';
 
 const schema = yup.object().shape({
-
-
-
-
-
-
-  
   usuario: yup.string().required('Usuario es requerido'),
   contrasena: yup.string().required('Contraseña es requerida'),
   nombre: yup.string().required('Nombre es requerido'),
@@ -28,6 +24,33 @@ const Register = () => {
 
   const onSubmit = data => {
     console.log(data);
+    API.getTokenAPIs("admin", "secret").then((result) => {
+      if (result.access_token === undefined) {
+        console.log("hubo algún error")
+      } else {
+        console.log(result)
+        Auth.saveJWT(result.access_token)
+        if (Auth.getJWT() != null) {
+          API.authUser(data).then((result) => {
+            console.log(result)
+            console.log("este es el token", Auth.getJWT())
+            if (result.detail != "Not authenticated") {
+              API.registrarUsuario(data).then((result) => {
+                if (result.detail === "Usuario creado") {
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Usuario Creado',
+                    text: 'El usuario ha sido creado exitosamente.',
+                  });
+                }
+              })
+            }
+          }
+          )
+        }
+      }
+    }
+    )
   };
 
   return (
